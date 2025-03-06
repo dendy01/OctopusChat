@@ -1,0 +1,1 @@
+dotnet ef migrations add InitialDatabase --project ../Server.Database --startup-project ../Server.Api
