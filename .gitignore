@@ -1,0 +1,9 @@
+*/bin/*
+*/obj/*
+/obj/
+/bin/
+bin/*
+Server/.idea/*
+Server/Server.Api/bin/*
+Server/Server.Api/obj/*
+Server/Server.Database/obj/*
