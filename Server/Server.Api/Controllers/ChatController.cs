@@ -7,7 +7,6 @@ namespace Server.Api.Controllers
 {
 	public class ChatResponse
 	{
-		public User[] Members { get; set; }
 		public Message[] Messages { get; set; }
 	}
 
@@ -31,7 +30,8 @@ namespace Server.Api.Controllers
 			}
 			
 			await _database.Messages.AddAsync(message);
-
+			await _database.SaveChangesAsync();
+			
 			return Ok();
 		}
 
