@@ -3,10 +3,13 @@
 /obj/
 /bin/
 bin/*
+Server/.vs/*
 Server/.idea/*
 Server/Server.Api/bin/*
 Server/Server.Api/obj/*
 Server/Server.Database/obj/*
+Server/Server.Database/chat.*
+Server/Server.Database/bin/*
 
 # Logs
 logs
