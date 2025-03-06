@@ -27,6 +27,37 @@
     
     GetChat();
     
+    async function SendMessage(text)
+    {
+        const url = "https://f0ea-185-59-102-55.ngrok-free.app/chat/send";
+        
+        const now = new Date();
+        
+        const body = {
+            Text: text,
+            DateTime: now.toISOString(),
+            ChatId: 1,
+            UserId: 1,
+        };
+        
+        const response = await fetch(
+            url,
+            {
+                method: "POST",
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                credentials: "include",
+                body: JSON.stringify(body),
+            },
+        );
+        
+        console.log('status send message', response.status);
+    }
+    
+    SendMessage("так что слушай меня сюда нахуй блять")
+    
 </script>
 </body>
 </html>

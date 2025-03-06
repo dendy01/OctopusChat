@@ -5,11 +5,19 @@ using Server.Database.Entities;
 
 namespace Server.Api.Controllers
 {
-	public class ChatResponse
+	public class MessagesModel
 	{
 		public Message[] Messages { get; set; }
 	}
 
+	public class MessageModel
+	{
+		public string Text { get; set; }
+		public DateTime DateTime { get; set; }
+		public long ChatId { get; set; }
+		public long UserId { get; set; }
+	}
+	
 	[ApiController]
 	[Route("chat")]
 	public class ChatController : ControllerBase
@@ -22,21 +30,29 @@ namespace Server.Api.Controllers
 		}
 
 		[HttpPost("send")]
-		public async Task<IActionResult> SendMessage(Message message)
+		public async Task<IActionResult> SendMessage([FromBody] MessageModel model)
 		{
-			if (String.IsNullOrEmpty(message.Text))
+			if (String.IsNullOrEmpty(model.Text))
 			{
 				return BadRequest("Message text is empty.");
 			}
+
+			Message entity = new()
+			{
+				Text = model.Text,
+				DateTime = model.DateTime,
+				ChatId = model.ChatId,
+				UserId = model.UserId,
+			};
 			
-			await _database.Messages.AddAsync(message);
+			await _database.Messages.AddAsync(entity);
 			await _database.SaveChangesAsync();
 			
 			return Ok();
 		}
 
 		[HttpGet("{id}")]
-		public async Task<ActionResult<ChatResponse>> GetMessage(int id)
+		public async Task<ActionResult<MessagesModel>> GetMessage(int id)
 		{
 			Chat chat = _database.Chats.FirstOrDefault();
 
@@ -51,7 +67,7 @@ namespace Server.Api.Controllers
 				.Take(20)
 				.ToListAsync();
 			
-			return new ChatResponse()
+			return new MessagesModel()
 			{
 				Messages = messages.ToArray()
 			};
