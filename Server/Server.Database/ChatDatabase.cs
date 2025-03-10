@@ -1,12 +1,14 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Security.Claims;
+using Microsoft.EntityFrameworkCore;
 using Server.Database.Entities;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Server.Database
 {
-	public sealed class ChatDatabase : DbContext
+	public sealed class ChatDatabase : IdentityDbContext<User, IdentityRole<long>, long>
 	{
 		public DbSet<Message> Messages { get; set; }
-		public DbSet<User> Users { get; set; }
 		public DbSet<Chat> Chats { get; set; }
 
 		public ChatDatabase()

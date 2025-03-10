@@ -8,56 +8,294 @@
     <title>Document</title>
 </head>
 <body>
+<button id="update_token_button">Update token</button>
+<div id="log">
+    
+</div>
 
 <script>
-    
-    async function GetChat()
+    class User
     {
-        const url = "https://f0ea-185-59-102-55.ngrok-free.app/chat/1";
-        const response = await fetch(
-            url,
+        constructor(id, userName, password)
+        {
+            this.Id = id;
+            this.UserName = userName;
+            this.Password = password;
+        }
+    }
+    class RegisterModel
+    {
+        constructor(email, userName, password, confirmPassword)
+        {
+            this.Email = email;
+            this.UserName = userName;
+            this.Password = password;
+            this.ConfirmPassword = confirmPassword;
+        }
+    }
+    
+    class MessageModel
+    {
+        constructor(text, chatId, userId, dateTimeCreated = null)
+        {
+            this.Text = text;
+            this.ChatId = chatId;
+            this.UserId = userId;
+            
+            if (dateTimeCreated === null)
             {
-                method: "GET",
-                credentials: 'include',
+                const now = new Date();
+                
+                this.DateTimeCreated = now.toISOString();
+                return;
             }
-        );
-        
-        response.text().then(console.log);
+            
+            this.DateTimeCreated = dateTimeCreated;
+        }
     }
     
-    GetChat();
-    
-    async function SendMessage(text)
+    class Config
     {
-        const url = "https://f0ea-185-59-102-55.ngrok-free.app/chat/send";
-        
-        const now = new Date();
-        
-        const body = {
-            Text: text,
-            DateTime: now.toISOString(),
-            ChatId: 1,
-            UserId: 1,
-        };
-        
-        const response = await fetch(
-            url,
-            {
-                method: "POST",
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                credentials: "include",
-                body: JSON.stringify(body),
-            },
-        );
-        
-        console.log('status send message', response.status);
+        constructor(host, user)
+        {
+            this.Host = host;
+            this.User = user;
+        }
     }
     
-    SendMessage("так что слушай меня сюда нахуй блять")
+    class OctopusApi
+    {
+        #key_jwt_token = "JWT_TOKEN";
+        
+        #LOGIN_PATH = '/api/account/login';
+        #REGISTER_PATH = '/api/account/register';
+        #SEND_MESSAGE_PATH = '/chat/send';
+
+        #config = null;
+
+        constructor(config)
+        {
+            this.#config = config;
+            this.baseUrl = `https://${this.#config.Host}`;
+            
+            this.JWT_TOKEN = null;
+            
+            this.LogBefore = new EventTarget();
+            this.LogAfter = new EventTarget();
+        }
+        
+        InvokeLogBefore(text) { this.InvokeLogEvent(this.LogBefore, text); }
+        
+        InvokeLogAfter(text) { this.InvokeLogEvent(this.LogAfter, text); }
+        
+        InvokeLogEvent(eventTarget, text)
+        {
+            const event = new CustomEvent('Log', { detail: text });
+
+            eventTarget?.dispatchEvent(event);
+        }
+        
+        async Authorize()
+        {
+            this.JWT_TOKEN = localStorage.getItem(this.#key_jwt_token);
+            
+            this.InvokeLogBefore("Checking for token availability.")
+            
+            if (this.JWT_TOKEN === null || this.JWT_TOKEN === undefined || this.JWT_TOKEN === 'undefined')
+            {
+                await this.UpdateJwtToken();
+                
+                this.InvokeLogAfter("Token is updated.");
+                return;
+            }
+            
+            this.InvokeLogAfter("Token is exists.")
+        }
+        
+        async UpdateJwtToken()
+        {
+            this.JWT_TOKEN = await this.Login(this.#config.User);
+            localStorage.setItem(this.#key_jwt_token, this.#config.JWT_TOKEN);
+        }
+        
+        async Get(path)
+        {
+            const url = new URL(path, this.baseUrl);
+
+            this.InvokeLogBefore(`Request to GET '${url}'`);
+            
+            const response = await fetch(
+                url,
+                {
+                    method: "GET",
+                    headers: {
+                        'Authorization': `Bearer ${this.JWT_TOKEN}`,
+                    },
+                    credentials: "include",
+                }
+            );
+            
+            this.InvokeLogAfter(`Response from GET '${url}' status: ${response.status}`);
+            
+            return response;
+        }
+        
+        async Post(path, body)
+        {
+            const url = new URL(path, this.baseUrl);
+
+            this.InvokeLogBefore(`Request to POST '${url}'\nbody: ${body}`);
+            
+            const response = await fetch(
+                url,
+                {
+                    method: "POST",
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${this.JWT_TOKEN}`,
+                    },
+                    credentials: "include",
+                    body: JSON.stringify(body),
+                }
+            );
+
+            this.InvokeLogAfter(`Response from POST '${url}' status: ${response.status}`);
+            
+            return response;
+        }
+        
+        async Login(user)
+        {
+            this.InvokeLogBefore(`Try to login by ${this.#config.User.UserName}`);
+            
+            const url = new URL(this.#LOGIN_PATH, this.baseUrl);
+            
+            const response = await fetch(
+                url,
+                {
+                    method: "POST",
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                    },
+                    credentials: "include",
+                    body: JSON.stringify(user),
+                }
+            );
+            
+            const token = (await response.json()).token;
+
+            this.InvokeLogAfter(`Token is received: ${token}`);
+
+            return token;
+        }
+        
+        async Register(registerModel)
+        {
+            const url = new URL(this.#REGISTER_PATH, this.baseUrl);
+
+            this.InvokeLogBefore(`Try to register user: ${this.#config.User.UserName}`);
+            
+            const response = await fetch(
+                url,
+                {
+                    method: "POST",
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                    },
+                    credentials: "include",
+                    body: JSON.stringify(registerModel),
+                },
+            );
+            
+            this.InvokeLogAfter(`Status register: ${response.status}`);
+        }
+        
+        async GetChat(chatId)
+        {
+            const response = await this.Get(`/chat/${chatId}`);
+            
+            this.InvokeLogAfter(await response.text());
+        }
+        
+        async SendMessage(text, chatId)
+        {
+            const message = new MessageModel(text, chatId, this.#config.Id);
+
+            const response = await this.Post(this.#SEND_MESSAGE_PATH, message);
+        }
+    }
     
+    async function Main()
+    {
+        const registerModels = [
+            new RegisterModel("goncharov.safe@gmail.com", "Goncharov", "Qwerty123$", "Qwerty123$"),
+            new RegisterModel("evgeny.bl2000@gmail.com", "Eugene", "Asdfg123$", "Asdfg123$"),
+        ];
+
+        const users = [
+            new User(3, "Goncharov", "Qwerty123$"),
+            new User(4, "Eugene", "Asdfg123$"),
+        ];
+
+        const goncharov = users[0];
+        const config = new Config("48c3-185-59-102-55.ngrok-free.app", goncharov);
+
+        const api = new OctopusApi(config);
+
+        const button = document.getElementById("update_token_button");
+        
+        api.LogBefore.addEventListener("Log", log);
+        api.LogAfter.addEventListener("Log", log);
+
+        api.LogBefore.addEventListener("Log", LogRed);
+        api.LogAfter.addEventListener("Log", LogGreen);
+        
+        button.addEventListener("click", api.Authorize.bind(api));
+        button.addEventListener("click", async () => await api.GetChat(1));
+        
+        await api.Authorize();
+
+        await api.GetChat(1);
+        
+        function log(event) { console.log(event.detail); }
+        
+        function LogGreen(event)
+        {
+            Log(event, 'green');
+        }
+        function LogRed(event)
+        {
+            Log(event, 'red');
+        }
+        function Log(event, color = 'black')
+        {
+            const text = event.detail;
+            
+            const logBlock = document.getElementById("log");
+
+            if (typeof text === 'string' || text instanceof String)
+            {
+                const code = document.createElement("code");
+                code.innerText = text;
+                code.style.color = color
+                logBlock.append(code);
+
+                const br = document.createElement('br');
+                
+                logBlock.append(br);
+                logBlock.append(br);
+                
+                return;
+            }
+
+            console.log(text);
+        }
+    }
+    
+    Main();
 </script>
 </body>
 </html>
