@@ -14,7 +14,7 @@
 						id="username" 
 						name="username" 
 						maxlength="64"
-						v-model="userName"
+						v-model="userModel.UserName"
 						required
 					>
 
@@ -25,7 +25,7 @@
 						name="password"
 						minlength="8" 
 						maxlength="64"
-						v-model="userPassword"
+						v-model="userModel.Password"
 						required
 					>
 
@@ -41,6 +41,7 @@
 						id="username" 
 						name="username" 
 						maxlength="64"
+						v-model="registerModel.UserName"
 						required
 					>
 
@@ -51,6 +52,7 @@
 						name="password"
 						minlength="8" 
 						maxlength="64"
+						v-model="registerModel.Password"
 						required
 					>
 
@@ -61,6 +63,7 @@
 						name="password"
 						minlength="8" 
 						maxlength="64"
+						v-model="registerModel.ConfirmPassword"
 						required
 					>
 
@@ -79,6 +82,7 @@
 						id="email" 
 						name="email" 
 						maxlength="64"
+						v-model="registerModel.Email"
 						required
 					>
 
@@ -97,8 +101,32 @@ import { useRouter } from "vue-router";
 const isSignIn = ref(true);
 const router = useRouter();
 
-const userName = ref('');
-const userPassword = ref('');
+class UserModel {
+	public UserName: string = '';
+	public Password: string = '';
+
+	public constructor(userName, password) {
+		this.UserName = userName;
+		this.Password = password;
+	}
+}
+
+class RegisterModel {
+	public UserName: string = '';
+	public Password: string = '';
+	public ConfirmPassword: string = '';
+	public Email: string = '';
+
+	public constructor(userName, password, confirmPassword, email) {
+		this.UserName = userName;
+		this.Password = password;
+		this.ConfirmPassword = confirmPassword;
+		this.Email = email;
+	}
+}
+
+const userModel = ref<UserModel>(new UserModel());
+const registerModel = ref<RegisterModel>(new RegisterModel());
 
 const login = async (event: any) => {
 	event.preventDefault();
@@ -110,10 +138,31 @@ const login = async (event: any) => {
             'Content-Type': 'application/json'
         },
         credentials: "include",
-        body: JSON.stringify({
-        	UserName: userName.value,
-        	Password: userPassword.value
-        })
+        body: JSON.stringify(userModel.value)
+	});
+
+	const json = await response.json();
+	console.log( document.cookie );
+
+	sessionStorage.setItem(Server.NAME_TOKEN, json.token);
+	document.cookie = `currentUserId=${ json.currentUserId }`;
+
+	if (json.token) {
+		router.push(Server.BASE_URL);
+	} 
+};
+
+const register = async (event: any) => {
+	event.preventDefault();
+
+	const response = await fetch(`https://${ Server.HOST }/api/account/register`, {
+		method: "POST",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        credentials: "include",
+        body: JSON.stringify(registerModel.value)
 	});
 
 	const json = await response.json();

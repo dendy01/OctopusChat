@@ -59,7 +59,6 @@ const getMessages = async () => {
     });
 
     messages.value = await response.json();
-    console.log(messages.value);
 };
 
 const sendMessage = async () => {

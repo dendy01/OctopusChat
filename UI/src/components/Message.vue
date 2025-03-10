@@ -20,6 +20,8 @@ interface IPropsType {
 defineProps<IPropsType>();
 
 const currentUserId = Number(document.cookie.split('=')[1]);
+
+console.log(currentUserId);
 </script>
 
 <style scoped>

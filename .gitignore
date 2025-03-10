@@ -10,6 +10,7 @@ Server/Server.Api/obj/*
 Server/Server.Database/obj/*
 Server/Server.Database/chat.*
 Server/Server.Database/bin/*
+UI/package-lock.json
 package-lock.json
 
 # Logs
