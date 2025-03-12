@@ -9,12 +9,12 @@
 			<div :class="['authorize-forms__signin', isSignIn && 'signin-active']">
 				<form v-if="isSignIn">
 					<label for="username">Имя</label>
-					<input 
+					<input
 						type="text" 
 						id="username" 
 						name="username" 
 						maxlength="64"
-						v-model="userModel.UserName"
+						v-model="storeAuth.userName"
 						required
 					>
 
@@ -25,11 +25,11 @@
 						name="password"
 						minlength="8" 
 						maxlength="64"
-						v-model="userModel.Password"
+						v-model="storeAuth.password"
 						required
 					>
 
-					<button class="btn" @click="login">Войти</button>
+					<button type="submit" class="btn" @click.prevent="storeAuth.login">Войти</button>
 				</form>
 			</div>
 
@@ -41,7 +41,7 @@
 						id="username" 
 						name="username" 
 						maxlength="64"
-						v-model="registerModel.UserName"
+						v-model="storeRegister.userName"
 						required
 					>
 
@@ -52,7 +52,7 @@
 						name="password"
 						minlength="8" 
 						maxlength="64"
-						v-model="registerModel.Password"
+						v-model="storeRegister.password"
 						required
 					>
 
@@ -63,7 +63,7 @@
 						name="password"
 						minlength="8" 
 						maxlength="64"
-						v-model="registerModel.ConfirmPassword"
+						v-model="storeRegister.confirmPassword"
 						required
 					>
 
@@ -82,11 +82,11 @@
 						id="email" 
 						name="email" 
 						maxlength="64"
-						v-model="registerModel.Email"
+						v-model="storeRegister.email"
 						required
 					>
 
-					<button type="submit" class="btn">Регистрация</button>
+					<button type="submit" class="btn" @click.prevent="storeRegister.register">Регистрация</button>
 				</form>
 			</div>
 		</div>
@@ -94,84 +94,14 @@
 </template>
 
 <script setup lang="ts">
-import { Server } from "../configs/server.ts";
 import { ref } from "vue";
-import { useRouter } from "vue-router";
+import { useAuth } from "../store/auth.ts";
+import { useRegister } from "../store/register.ts";
 
 const isSignIn = ref(true);
-const router = useRouter();
 
-class UserModel {
-	public UserName: string = '';
-	public Password: string = '';
-
-	public constructor(userName, password) {
-		this.UserName = userName;
-		this.Password = password;
-	}
-}
-
-class RegisterModel {
-	public UserName: string = '';
-	public Password: string = '';
-	public ConfirmPassword: string = '';
-	public Email: string = '';
-
-	public constructor(userName, password, confirmPassword, email) {
-		this.UserName = userName;
-		this.Password = password;
-		this.ConfirmPassword = confirmPassword;
-		this.Email = email;
-	}
-}
-
-const userModel = ref<UserModel>(new UserModel());
-const registerModel = ref<RegisterModel>(new RegisterModel());
-
-const login = async (event: any) => {
-	event.preventDefault();
-
-	const response = await fetch(`https://${ Server.HOST }/api/account/login`, {
-		method: "POST",
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        credentials: "include",
-        body: JSON.stringify(userModel.value)
-	});
-
-	const json = await response.json();
-	console.log( document.cookie );
-
-	sessionStorage.setItem(Server.NAME_TOKEN, json.token);
-	document.cookie = `currentUserId=${ json.currentUserId }`;
-
-	if (json.token) {
-		router.push(Server.BASE_URL);
-	} 
-};
-
-const register = async (event: any) => {
-	event.preventDefault();
-
-	const response = await fetch(`https://${ Server.HOST }/api/account/register`, {
-		method: "POST",
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        credentials: "include",
-        body: JSON.stringify(registerModel.value)
-	});
-
-	const json = await response.json();
-	console.log( document.cookie );
-
-	sessionStorage.setItem(Server.NAME_TOKEN, json.token);
-	document.cookie = `currentUserId=${ json.currentUserId }`;
-	router.push(Server.BASE_URL);
-};
+const storeAuth = useAuth();
+const storeRegister = useRegister();
 </script>
 
 <style scoped>

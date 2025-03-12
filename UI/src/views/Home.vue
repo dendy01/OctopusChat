@@ -13,19 +13,21 @@
             </div>
 
             <div class="chat-messages__input">
-                <ClipIcon />
-                <input
-                    type="text" 
-                    name="message" 
-                    class="messages-input" 
-                    placeholder="Написать сообщение..."
-                    maxlength="512"
-                    v-model="message"
-                >
-                <SmileIcon />
-                <button class="btn" @click="sendMessage">
-                    <SendIcon />
-                </button>
+                <div class="input-wrap">
+                    <ClipIcon />
+                    <input
+                        type="text" 
+                        name="message" 
+                        class="messages-input" 
+                        placeholder="Написать сообщение..."
+                        maxlength="512"
+                        v-model="message"
+                    >
+                    <SmileIcon />
+                    <button class="btn" @click="sendMessage">
+                        <SendIcon />
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -70,7 +72,7 @@ const sendMessage = async () => {
 
     const body: MessageModel = {
         Text: message.value,
-        DateTime: new Date().toISOString(),
+        CreatedDateTime: new Date().toISOString(),
         ChatId: 1,
         UserId: Number(currentUserId)
     };
@@ -99,7 +101,6 @@ onMounted(() => {
     .chat {
         width: 100%;
         height: 100vh;
-        background-image: linear-gradient(135deg, #000, #09f 75%, #fff);
     }
 
     .chat-messages {
@@ -129,19 +130,33 @@ onMounted(() => {
         }
 
         .chat-messages__message {
-            padding: 12px;
+            padding: 24px;
             overflow-y: auto;
+
+            background-color: #f7f6fa;
         }
 
         .chat-messages__input {
             width: 100%;
-            padding: 8px 12px;
+            padding: 24px;
 
             display: flex;
             align-items: center;
             gap: 16px;
 
-            background-color: #FBF8EF;
+            background-color: #f7f6fa;
+
+            .input-wrap {
+                width: 100%;
+                padding: 8px 12px;
+                border-radius: 12px;
+
+                display: flex;
+                align-items: center;
+                gap: 16px;
+
+                background-color: #fff;
+            }
         }
 
         .messages-input {
