@@ -51,7 +51,7 @@ const currentUserId = Number(document.cookie.split('=')[1]);
 
         .message-user__text {
             margin: 8px 0;
-            font-size: 18px;
+            font-size: 16px;
         }
     }
 }

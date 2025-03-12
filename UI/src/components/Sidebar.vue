@@ -1,9 +1,9 @@
 <template>
 	<aside class="chats">
-        <div class="chats-profile">
+        <div class="chats-avatar">
             <Avatar :text="messages?.Members[currentUserId]"/>
 
-            <label for="search" class="chats-profile__search">
+            <label for="search" class="chats-avatar__search">
                 <Search />
                 <input type="search" name="search" id="search" placeholder="Search...">
             </label>
@@ -15,7 +15,7 @@
                 <Avatar :img="AvatarIcon" :text="messages?.Members[currentUserId === '4' ? '3' : '4']"/>
 
                 <div class="user-name">
-                    <h3 class="name">{{ messages?.Members[currentUserId === "4" ? "3" : "4"] }}</h3>
+                    <h4 class="name">{{ messages?.Members[currentUserId === "4" ? "3" : "4"] }}</h4>
                     <p class="last-message">{{ messages?.Messages.at(-1).Text }}</p>
                 </div>
             </li>
@@ -49,7 +49,7 @@ const currentUserId = document.cookie.split('=')[1];
     border-right: 1px solid #e6e5e8;
     background-color: white;
 
-    .chats-profile {
+    .chats-avatar {
         height: 95px;
         padding: 20px;
         border-bottom: 1px solid #e6e5e8;
@@ -58,9 +58,9 @@ const currentUserId = document.cookie.split('=')[1];
         align-items: center;
         gap: 20px;
 
-        .chats-profile__search {
+        .chats-avatar__search {
             width: 100%;
-            padding: 16px;
+            padding: 8px;
 
             border-radius: 50px;
             border: 2px solid #e6e5e8;
@@ -68,10 +68,6 @@ const currentUserId = document.cookie.split('=')[1];
             display: flex;
             align-items: center;
             gap: 8px;
-
-            input {
-                font-size: 18px;
-            }
         }
     }
 

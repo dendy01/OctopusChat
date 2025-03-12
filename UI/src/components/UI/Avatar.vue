@@ -21,10 +21,10 @@ defineProps<IPropsType>();
 
 <style scoped>
 .avatar {
-	width: 60px;
-    height: 60px;
-    min-width: 60px;
-    min-height: 60px;
+	width: 40px;
+    height: 40px;
+    min-width: 40px;
+    min-height: 40px;
     border-radius: 50%;
     overflow: hidden;
 }
