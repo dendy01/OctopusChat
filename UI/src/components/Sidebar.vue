@@ -65,6 +65,7 @@ const getUserChats = (messages) => {
         .chats-avatar__search {
             width: 100%;
             padding: 8px;
+            cursor: text;
 
             border-radius: 50px;
             border: 2px solid #e6e5e8;
@@ -72,6 +73,14 @@ const getUserChats = (messages) => {
             display: flex;
             align-items: center;
             gap: 8px;
+
+            input {
+                pointer-events: none;
+            }
+        }
+
+        .chats-avatar__search:focus-within {
+            border: 2px solid #8C57FF;
         }
     }
 
@@ -95,8 +104,8 @@ const getUserChats = (messages) => {
             gap: 20px;
 
             .name {
-                font-size: 16px;
-                font-weight: 600;
+                font-size: 15px;
+                font-weight: 500;
             }
         }
     }
@@ -107,6 +116,7 @@ const getUserChats = (messages) => {
 
     .last-message {
         margin-top: 4px;
+        font-size: 14px;
         word-break: break-word;
     }
 

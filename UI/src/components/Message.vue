@@ -4,9 +4,9 @@
 
 		<div class="message-user__item">
 	        <div class="item-text">
-                <h3 class="message-user__text">{{ message.Text }}</h3>   
+                <p class="message-user__text">{{ message.Text }}</p>   
             </div>
-	        <p class="item-time">{{ message.CreatedDateTime }}</p>
+	        <p class="item-time">{{ getDate() }}</p>
 	    </div>
 	</div>
 </template>
@@ -21,9 +21,17 @@ interface IPropsType {
 	members: { [id: number]: string }
 }
 
-defineProps<IPropsType>();
+const props = defineProps<IPropsType>();
 
 const currentUserId = Number(document.cookie.split('=')[1]);
+
+const getDate = () => {
+
+    const hours = props.message.CreatedDateTime.split('T')[1].split(':')[0];
+    const minutes = props.message.CreatedDateTime.split('T')[1].split(':')[1];
+
+    return `${ hours }:${ minutes }`;
+}
 </script>
 
 <style scoped>
@@ -45,13 +53,14 @@ const currentUserId = Number(document.cookie.split('=')[1]);
         }
 
         .item-time {
+            font-size: 14px;
             margin-top: 8px;
             color: #ABA8B1;
         }
 
         .message-user__text {
-            margin: 8px 0;
-            font-size: 16px;
+            font-size: 15px;
+            font-weight: 500;
         }
     }
 }

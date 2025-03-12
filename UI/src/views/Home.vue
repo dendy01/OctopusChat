@@ -14,7 +14,7 @@
 
             <div class="chat-messages__input">
                 <div class="input-wrap">
-                    <ClipIcon />
+                    <ClipIcon class="input-wrap__clip"/>
                     <input
                         type="text" 
                         name="message" 
@@ -23,9 +23,9 @@
                         maxlength="512"
                         v-model="message"
                     >
-                    <SmileIcon />
+                    <SmileIcon class="input-wrap__smile"/>
                     <button class="btn" @click="sendMessage">
-                        <SendIcon />
+                        <SendIcon class="input-wrap__send"/>
                     </button>
                 </div>
             </div>
@@ -158,11 +158,18 @@ onMounted(() => {
                 gap: 16px;
 
                 background-color: #fff;
+
+                .input-wrap__smile,
+                .input-wrap__send,
+                .input-wrap__clip {
+                    cursor: pointer;
+                    min-width: 24px;
+                }
             }
         }
 
         .messages-input {
-            height: 40px;
+            height: 30px;
             width: 100%;
             font-size: 16px;
             background: none;

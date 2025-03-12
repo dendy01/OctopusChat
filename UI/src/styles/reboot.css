@@ -5,7 +5,13 @@
 	border: none;
 	outline: none;
 	text-decoration: none;
-	font-family: sans-serif;
+	font-family: "Apple-system";
+}
+
+@font-face {
+    font-family: "Apple-system";
+    src: url("../assets/fonts/Inter-VariableFont_opsz.ttf");
+    font-size: 16px;
 }
 
 img,
