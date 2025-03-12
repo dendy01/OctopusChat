@@ -36,7 +36,7 @@ const currentUserId = Number(document.cookie.split('=')[1]);
         width: 40%;
 
         .item-text {
-            padding: 16px;
+            padding: 8px 16px;
             border-radius: 0 12px 12px 12px;
 
             color: #433c50;
@@ -69,7 +69,7 @@ const currentUserId = Number(document.cookie.split('=')[1]);
     .message-user__item {
 
         .item-text {
-            padding: 16px;
+            padding: 8px 16px;
             border-radius: 12px 0 12px 12px;
             
             color: #fff;

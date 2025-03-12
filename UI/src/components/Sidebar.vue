@@ -12,10 +12,10 @@
         <p class="chats-title">Чаты</p>
 		<ul class="chats-users">
             <li class="chats-users__user chats-active">
-                <Avatar :img="AvatarIcon" :text="messages?.Members[currentUserId === '4' ? '3' : '4']"/>
+                <Avatar :img="AvatarIcon" :text="getUserChats(messages)"/>
 
                 <div class="user-name">
-                    <h4 class="name">{{ messages?.Members[currentUserId === "4" ? "3" : "4"] }}</h4>
+                    <h4 class="name">{{ getUserChats(messages) }}</h4>
                     <p class="last-message">{{ messages?.Messages.at(-1).Text }}</p>
                 </div>
             </li>
@@ -35,6 +35,10 @@ interface IPropsType {
 
 defineProps<IPropsType>();
 const currentUserId = document.cookie.split('=')[1];
+
+const getUserChats = (messages) => {
+    return messages?.Members[currentUserId === "4" ? "3" : "4"];
+}
 </script>
 
 <style setup>
@@ -50,7 +54,7 @@ const currentUserId = document.cookie.split('=')[1];
     background-color: white;
 
     .chats-avatar {
-        height: 95px;
+        height: 75px;
         padding: 20px;
         border-bottom: 1px solid #e6e5e8;
 
@@ -89,6 +93,11 @@ const currentUserId = document.cookie.split('=')[1];
             display: flex;
             align-items: center;
             gap: 20px;
+
+            .name {
+                font-size: 16px;
+                font-weight: 600;
+            }
         }
     }
 

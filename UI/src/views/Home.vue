@@ -112,6 +112,8 @@ onMounted(() => {
         flex-direction: column;
         justify-content: space-between;
 
+        background-color: #f7f6fa;
+
         .header {
             padding: 8px;
             color: #fff;
