@@ -9,7 +9,7 @@ public class Message
 	
 	[Column(TypeName = "varchar(512)")]
 	public string Text { get; set; }
-	public DateTime DateTime { get; set; }
+	public DateTime CreatedDateTime { get; set; }
 
 	public long ChatId { get; set; }
 	[JsonIgnore]

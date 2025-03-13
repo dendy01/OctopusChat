@@ -76,7 +76,7 @@ namespace Server.Api.Controllers
 			Message entity = new()
 			{
 				Text = model.Text,
-				DateTime = model.DateTime,
+				CreatedDateTime = model.DateTime,
 				ChatId = model.ChatId,
 				UserId = Convert.ToInt64(userId),
 			};
@@ -99,7 +99,7 @@ namespace Server.Api.Controllers
 			}
 
 			Message[] messages = await _database.Messages
-				.OrderByDescending(message => message.DateTime)
+				.OrderByDescending(message => message.CreatedDateTime)
 				.Where(message => message.ChatId == chat.Id)
 				.Take(15)
 				.OrderBy(message => message.Id)
