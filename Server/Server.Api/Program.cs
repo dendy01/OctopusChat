@@ -19,6 +19,8 @@ namespace Server.Api
 			// 	//options.RedirectStatusCode = StatusCodes.Status307TemporaryRedirect;
 			// 	options.HttpsPort = 443;
 			// });
+
+			builder.Services.AddSignalR();
 			
 			string[] origins = new[]
 			{
@@ -62,7 +64,8 @@ namespace Server.Api
 			
 			builder.Services.Configure<AccountConfiguration>(
 				builder.Configuration.GetSection(nameof(AccountConfiguration)));
-			
+
+			builder.Services.AddSingleton<RoomService>();
 
 			builder.Services.AddAuthentication(options =>
 			{
@@ -91,6 +94,7 @@ namespace Server.Api
 				};
 			});
 			
+			
 			WebApplication app = builder.Build();
 
 			if (app.Environment.IsDevelopment())
@@ -118,6 +122,7 @@ namespace Server.Api
 			app.UseHttpsRedirection();
 			
 			app.MapControllers();
+			app.MapHub<ChatHub>("/chathub");
 
 			app.Run();
 		}

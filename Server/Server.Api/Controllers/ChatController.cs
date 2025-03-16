@@ -18,7 +18,7 @@ namespace Server.Api.Controllers
 	public class MessageModel
 	{
 		public string Text { get; set; }
-		public DateTime DateTime { get; set; }
+		public DateTime CreatedDateTime { get; set; }
 		public long ChatId { get; set; }
 		public long UserId { get; set; }
 	}
@@ -76,7 +76,7 @@ namespace Server.Api.Controllers
 			Message entity = new()
 			{
 				Text = model.Text,
-				CreatedDateTime = model.DateTime,
+				CreatedDateTime = model.CreatedDateTime,
 				ChatId = model.ChatId,
 				UserId = Convert.ToInt64(userId),
 			};

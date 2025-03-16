@@ -10,7 +10,7 @@ namespace Server.Database
 	{
 		public DbSet<Message> Messages { get; set; }
 		public DbSet<Chat> Chats { get; set; }
-
+		public DbSet<ChatMember> ChatMembers { get; set; } 
 		public ChatDatabase()
 		{
 			
