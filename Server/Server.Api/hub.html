@@ -59,11 +59,9 @@
             
             const url = `http://${this.configuration.Host}${this.configuration.Path}`;
             
-            const token = this.Login(this.user);
-            
             this.connection = new signalR.HubConnectionBuilder()
                 .withUrl(url, {
-                    accessTokenFactory: () => token
+                    accessTokenFactory: this.Authorize.bind(this)
                 })
                 .withAutomaticReconnect()
                 .configureLogging(signalR.LogLevel.Information)
@@ -77,6 +75,10 @@
             this.connection.onreconnecting(this.Reconnecting.bind(this));
 
             // this.connection.onclose(this.Start.bind(this));
+        }
+        async Authorize()
+        {
+            return await this.Login(this.user); 
         }
         async Login(user)
         {
