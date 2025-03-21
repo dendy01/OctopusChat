@@ -39,3 +39,13 @@ const onInput = (value: string) => {
     emit('update:modelValue', value);
 };
 </script>
+
+<style scoped>
+.header {
+    height: 75px;
+    min-height: 75px;
+
+    background-color: var(--color-white-400);
+    border-bottom: 1px solid var(--color-gray-700);
+}
+</style>

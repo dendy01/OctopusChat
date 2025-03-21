@@ -1,3 +1,30 @@
+:root {
+
+	--color-white-700: #ffffff;
+	--color-white-400: #f7f6fa;
+
+	--color-dark-700: #433c50; /* тёмный */
+
+	--color-gray-700: #e6e5e8; /* серый */
+	--color-gray-400: #ABA8B1; /* светло-серый */
+
+	--color-green-700: #56ca00; /* зелёный */
+	--color-green-500: #D5E5D5;
+	--color-green-400: #e4f7d6; /* светло-зелёный */
+
+	--color-violet-700: #8c57ff; /* феолетовый */
+
+	--size-xl: 24px;
+	--size-lg: 16px;
+	--size-md: 12px;
+	--size-sm: 8px;
+
+	--fs-xl: 18px;
+	--fs-lg: 16px;
+	--fs-md: 15px;
+	--fs-sm: 14px;
+}
+
 * {
 	margin: 0;
 	padding: 0;
@@ -5,11 +32,11 @@
 	border: none;
 	outline: none;
 	text-decoration: none;
-	font-family: "Apple-system";
+	font-family: "Inter";
 }
 
 @font-face {
-    font-family: "Apple-system";
+    font-family: "Inter";
     src: url("../assets/fonts/Inter-VariableFont_opsz.ttf");
     font-size: 16px;
 }

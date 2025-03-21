@@ -10,13 +10,14 @@
         </div>
 
         <p class="chats-title">Чаты</p>
+
 		<ul class="chats-users">
             <li class="chats-users__user chats-active">
-                <Avatar :img="AvatarIcon" :text="getUserChats(messages)"/>
+                <Avatar :img="AvatarIcon" :text="getUserChats()"/>
 
                 <div class="user-name">
-                    <h4 class="name">{{ getUserChats(messages) }}</h4>
-                    <p class="last-message">{{ messages?.Messages.at(-1).Text }}</p>
+                    <h4 class="name">{{ getUserChats() }}</h4>
+                    <p class="last-message">{{ getLastMessage() }}</p>
                 </div>
             </li>
         </ul>
@@ -33,12 +34,16 @@ interface IPropsType {
 	messages: MessageModel;
 }
 
-defineProps<IPropsType>();
+const props = defineProps<IPropsType>();
 const currentUserId = document.cookie.split('=')[1];
 
 const getUserChats = (messages) => {
-    return messages?.Members[currentUserId === "4" ? "3" : "4"];
-}
+    return props.messages?.Members[currentUserId === "4" ? "3" : "4"];
+};
+
+const getLastMessage = () => {
+    return props.messages?.Messages.at(-1).Text
+};
 </script>
 
 <style setup>
@@ -50,13 +55,13 @@ const getUserChats = (messages) => {
     top: 0;
     left: 0;
 
-    border-right: 1px solid #e6e5e8;
-    background-color: white;
+    border-right: 1px solid var(--color-gray-700);
+    background-color: var(--color-white-700);
 
     .chats-avatar {
         height: 75px;
         padding: 20px;
-        border-bottom: 1px solid #e6e5e8;
+        border-bottom: 1px solid var(--color-gray-700);
 
         display: flex;
         align-items: center;
@@ -64,15 +69,15 @@ const getUserChats = (messages) => {
 
         .chats-avatar__search {
             width: 100%;
-            padding: 8px;
+            padding: var(--size-sm);
             cursor: text;
 
             border-radius: 50px;
-            border: 2px solid #e6e5e8;
+            border: 2px solid var(--color-gray-700);
 
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: var(--size-sm);
 
             input {
                 pointer-events: none;
@@ -80,53 +85,53 @@ const getUserChats = (messages) => {
         }
 
         .chats-avatar__search:focus-within {
-            border: 2px solid #8C57FF;
+            border: 2px solid var(--color-violet-700);
         }
     }
 
     .chats-title {
         padding: 20px;
-        font-size: 18px;
+        font-size: var(--fs-xl);
         font-weight: bold;
 
-        color: #8c57ff;
+        color: var(--color-violet-700);
     }
 
     .chats-users {
-        padding: 0 12px;
+        padding: 0 var(--size-md);
 
         .chats-users__user {
-            padding: 8px;
-            border-radius: 8px;
+            padding: var(--size-sm);
+            border-radius: var(--size-sm);
 
             display: flex;
             align-items: center;
             gap: 20px;
 
             .name {
-                font-size: 15px;
+                font-size: var(--fs-md);
                 font-weight: 500;
             }
         }
     }
 
-    .chats-users:hover {
-        background-color: #D5E5D5;
+    .chats-users__user:hover {
+        background-color: var(--color-green-500);
     }
 
     .last-message {
         margin-top: 4px;
-        font-size: 14px;
+        font-size: var(--fs-sm);
         word-break: break-word;
     }
 
     .chats-active {
-        color: #fff;
-        background-color: #8c57ff;
+        color: var(--color-white-700);
+        background-color: var(--color-violet-700);
     }
 
     .chats-active:hover {
-        background-color: #8c57ff;
+        background-color: var(--color-violet-700);
     }
 }
 </style>

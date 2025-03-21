@@ -36,30 +36,30 @@ const getDate = () => {
 
 <style scoped>
 .message-user {
-    margin-top: 24px;
+    margin-top: var(--size-xl);
     display: flex;
-    gap: 12px;
+    gap: var(--size-md);
 
     .message-user__item {
         width: 40%;
 
         .item-text {
-            padding: 8px 16px;
-            border-radius: 0 12px 12px 12px;
+            padding: var(--size-sm) var(--size-lg);
+            border-radius: 0 var(--size-md) var(--size-md) var(--size-md);
 
-            color: #433c50;
-            background-color: #fff;
+            color: var(--color-dark-700);
+            background-color: var(--color-white-700);
             box-shadow: 0 2px 2px rgba(0, 0, 0, .3);
         }
 
         .item-time {
-            font-size: 14px;
-            margin-top: 8px;
-            color: #ABA8B1;
+            font-size: var(--fs-sm);
+            margin-top: var(--size-sm);
+            color: var(--color-gray-400);
         }
 
         .message-user__text {
-            font-size: 15px;
+            font-size: var(--fs-md);
             font-weight: 500;
         }
     }
@@ -78,11 +78,11 @@ const getDate = () => {
     .message-user__item {
 
         .item-text {
-            padding: 8px 16px;
-            border-radius: 12px 0 12px 12px;
+            padding: var(--size-sm) var(--size-lg);
+            border-radius: var(--size-md) 0 var(--size-md) var(--size-md);
             
-            color: #fff;
-            background-color: #8c57ff;
+            color: var(--color-white-700);
+            background-color: var(--color-violet-700);
         }
     }
 }

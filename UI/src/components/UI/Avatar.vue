@@ -27,6 +27,8 @@ defineProps<IPropsType>();
     min-height: 40px;
     border-radius: 50%;
     overflow: hidden;
+
+    user-select: none;
 }
 
 .avatar-img, img {
@@ -40,14 +42,14 @@ defineProps<IPropsType>();
 }
 
 .avatar-noicon {
-	font-size: 18px;
+	font-size: var(--fs-xl);
 	font-weight: bold;
 
 	display: flex;
     align-items: center;
     justify-content: center;
 
-    color: #56ca00;
-    background-color: #e4f7d6;
+    color: var(--color-green-700);
+    background-color: var(--color-green-400);
 }
 </style>

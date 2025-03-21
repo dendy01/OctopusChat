@@ -109,18 +109,18 @@ const storeRegister = useRegister();
 	width: 400px;
 	margin: 50px auto;
 	padding: 20px;
-	border-radius: 8px;
+	border-radius: var(--size-sm);
 
 	color: #fff;
 	background-image: linear-gradient(135deg, #000, #09f 75%, #fff);
 
 	.authorize-btns {
 		display: flex;
-		gap: 16px;
+		gap: var(--size-lg);
 
 		.btn {
 			padding-bottom: 4px;
-			font-size: 18px;
+			font-size: var(--fs-xl);
 			cursor: pointer;
 
 			border-bottom: 3px solid transparent;
@@ -144,10 +144,10 @@ const storeRegister = useRegister();
 		display: flex;
 
 		input {
-			padding: 8px 16px;
-			margin: 4px 0 16px 0;
-			font-size: 18px;
-			border-radius: 16px;
+			padding: var(--size-sm) var(--size-lg);
+			margin: 4px 0 var(--size-lg) 0;
+			font-size: var(--fs-xl);
+			border-radius: var(--size-lg);
 
 			background-color: rgba(255, 255, 255, .3);
 			color: #fff;
@@ -155,12 +155,12 @@ const storeRegister = useRegister();
 
 		.btn {
 			width: 100%;
-			padding: 8px 16px;
-			margin-top: 16px;
-			font-size: 18px;
+			padding: var(--size-sm) var(--size-lg);
+			margin-top: var(--size-lg);
+			font-size: var(--fs-xl);
 			font-weight: bold;
 
-			border-radius: 16px;
+			border-radius: var(--size-lg);
 
 			background-color: #6c757d;
 			color: #fff;
