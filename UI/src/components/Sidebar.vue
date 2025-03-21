@@ -13,10 +13,10 @@
 
 		<ul class="chats-users">
             <li class="chats-users__user chats-active">
-                <Avatar :img="AvatarIcon" :text="getUserChats()"/>
+                <Avatar :img="AvatarIcon" :text="chatName"/>
 
                 <div class="user-name">
-                    <h4 class="name">{{ getUserChats() }}</h4>
+                    <h4 class="name">{{ chatName }}</h4>
                     <p class="last-message">{{ getLastMessage() }}</p>
                 </div>
             </li>
@@ -27,23 +27,27 @@
 <script setup lang="ts">
 import AvatarIcon from "../assets/user_icon.jfif";
 import Search from "../assets/icons/search.svg";
-import MessageModel from "./Models/MessageModel.ts";
+import { MessagesModel } from "./Models/MessageModel.ts";
 import Avatar from "./UI/Avatar.vue";
+import { ref, watch } from "vue";
 
 interface IPropsType {
-	messages: MessageModel;
+	messages: MessagesModel;
 }
 
 const props = defineProps<IPropsType>();
 const currentUserId = document.cookie.split('=')[1];
-
-const getUserChats = (messages) => {
-    return props.messages?.Members[currentUserId === "4" ? "3" : "4"];
-};
+const chatName = ref<string>('');
 
 const getLastMessage = () => {
-    return props.messages?.Messages.at(-1).Text
+    return props.messages?.Messages[props.messages?.Messages.length - 1]?.Text;
 };
+
+watch(() => props.messages, (newValue) => {
+    if (newValue) {
+        chatName.value = newValue.Members[currentUserId === "4" ? "3" : "4"];
+    }
+});
 </script>
 
 <style setup>

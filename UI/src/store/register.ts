@@ -13,7 +13,7 @@ export const useRegister = defineStore("register", () => {
 	const register = async () => {
 		const body = {
 			UserName: userName.value,
-			Password: Password.value,
+			Password: password.value,
 			ConfirmPassword: confirmPassword.value,
 			Email: email.value
 		};
@@ -43,6 +43,7 @@ export const useRegister = defineStore("register", () => {
 		userName,
 		password,
 		confirmPassword,
-		email
+		email,
+		register
 	};
 });

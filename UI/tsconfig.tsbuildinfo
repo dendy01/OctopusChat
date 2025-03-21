@@ -1,0 +1,1 @@
+{"root":["./src/main.ts","./src/vite-env.d.ts","./src/components/models/messagemodel.ts","./src/configs/server.ts","./src/routes/routes.ts","./src/store/auth.ts","./src/store/register.ts"],"errors":true,"version":"5.7.3"}

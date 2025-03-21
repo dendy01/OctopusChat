@@ -14,7 +14,6 @@
 <script setup lang="ts">
 import Avatar from "./UI/Avatar.vue";
 import { MessageModel } from "./Models/MessageModel.ts";
-import { computed } from "vue";
 
 interface IPropsType {
 	message: MessageModel;
@@ -26,9 +25,8 @@ const props = defineProps<IPropsType>();
 const currentUserId = Number(document.cookie.split('=')[1]);
 
 const getDate = () => {
-
-    const hours = props.message.CreatedDateTime.split('T')[1].split(':')[0];
-    const minutes = props.message.CreatedDateTime.split('T')[1].split(':')[1];
+    const hours = props.message.CreatedDateTime.split('T')[1].split(":")[0];
+    const minutes = props.message.CreatedDateTime.split('T')[1].split(":")[1];
 
     return `${ hours }:${ minutes }`;
 }

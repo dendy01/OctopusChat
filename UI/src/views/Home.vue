@@ -3,8 +3,6 @@
         <Sidebar :messages="messages"/>
 
         <div class="chat-messages">
-            <Header />
-
             <div class="chat-messages__message">
                 <Message 
                     v-for="message in messages?.Messages" 
@@ -40,16 +38,17 @@ import ClipIcon from "../assets/icons/clip.svg";
 import SmileIcon from "../assets/icons/smile.svg";
 import SendIcon from "../assets/icons/send.svg";
 import Message from "../components/Message.vue";
-import Header from "../components/Header.vue";
 import Sidebar from "../components/Sidebar.vue";
 import { Server } from "../configs/server.ts";
-import { store } from "../stores/useCurrentUser.ts";
-import { MessageModel } from "../components/Models/MessageModel.ts";
+import { MessageModel, MessagesModel } from "../components/Models/MessageModel.ts";
 import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 
-const message = ref<string>(null);
-const messages = ref<MessageModel>(null);
+const message = ref<string>('');
+const messages = ref<MessagesModel>({
+    Members: {},
+    Messages: []
+});
 
 const JWT_TOKEN = sessionStorage.getItem(Server.NAME_TOKEN);
 const currentUserId = Number(document.cookie.split('=')[1]);
@@ -73,16 +72,19 @@ const sendMessage = async () => {
         return;
     }
 
+    const id = messages.value?.Messages[messages.value?.Messages.length - 1].Id;
+
     console.log(currentUserId);
 
     const body: MessageModel = {
+        Id: id,
         Text: message.value,
         CreatedDateTime: new Date().toISOString(),
         ChatId: 1,
         UserId: currentUserId
     };
 
-    const response = await fetch(`https://${ Server.HOST }/chat/send`, {
+    await fetch(`https://${ Server.HOST }/chat/send`, {
         method: "POST",
         headers: {
             'Accept': 'application/json',

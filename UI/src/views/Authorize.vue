@@ -95,8 +95,8 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import { useAuth } from "../store/auth.ts";
-import { useRegister } from "../store/register.ts";
+import { useAuth } from "../store/auth";
+import { useRegister } from "../store/register";
 
 const isSignIn = ref(true);
 
